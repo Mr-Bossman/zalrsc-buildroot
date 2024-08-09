@@ -1,0 +1,59 @@
+From 0b239022e68da7388275c834045f5e93af358917 Mon Sep 17 00:00:00 2001
+From: Jesse Taube <jtaubepe@redhat.com>
+Date: Wed, 3 Jun 2026 13:42:42 -0400
+Subject: [PATCH] RISC-V: Add Zacas and Zahba to -march if enabled
+
+Only add Zacas and Zahba to march isa-string only if they are enabled.
+Avoid toolchain accedentally emiting Zacas or Zahba instructions or
+enabling "A" dependacy unless explictity selected by Kconfig
+
+Signed-off-by: Jesse Taube <jtaubepe@redhat.com>
+---
+ arch/riscv/Kconfig  | 6 ++++++
+ arch/riscv/Makefile | 4 ++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 824c9c64851c..a71b8cd24140 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -682,6 +682,9 @@ config TOOLCHAIN_HAS_ZABHA
+ 	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zabha)
+ 	depends on AS_HAS_OPTION_ARCH
+ 
++config RISCV_ISA_MARCH_ZABHA
++	def_bool TOOLCHAIN_HAS_ZABHA && RISCV_ISA_ZABHA
++
+ config RISCV_ISA_ZABHA
+ 	bool "Zabha extension support for atomic byte/halfword operations"
+ 	depends on TOOLCHAIN_HAS_ZABHA
+@@ -700,6 +703,9 @@ config TOOLCHAIN_HAS_ZACAS
+ 	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32ima_zacas)
+ 	depends on AS_HAS_OPTION_ARCH
+ 
++config RISCV_ISA_MARCH_ZACAS
++	def_bool TOOLCHAIN_HAS_ZACAS && RISCV_ISA_ZACAS
++
+ config RISCV_ISA_ZACAS
+ 	bool "Zacas extension support for atomic CAS"
+ 	depends on RISCV_ALTERNATIVE
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 607f3e12e9cc..7d28473a1262 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -77,10 +77,10 @@ riscv-march-$(CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI) := $(riscv-march-y
+ endif
+ 
+ # Check if the toolchain supports Zacas
+-riscv-march-$(CONFIG_TOOLCHAIN_HAS_ZACAS) := $(riscv-march-y)_zacas
++riscv-march-$(CONFIG_RISCV_ISA_MARCH_ZACAS) := $(riscv-march-y)_zacas
+ 
+ # Check if the toolchain supports Zabha
+-riscv-march-$(CONFIG_TOOLCHAIN_HAS_ZABHA) := $(riscv-march-y)_zabha
++riscv-march-$(CONFIG_RISCV_ISA_MARCH_ZABHA) := $(riscv-march-y)_zabha
+ 
+ # if "A" not supported, toolchain shall support zaamo/zalrsc
+ ifneq ($(CONFIG_RISCV_ISA_A),y)
+-- 
+2.54.0
+
