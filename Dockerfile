@@ -12,6 +12,6 @@ RUN git clone --recurse-submodules --single-branch --depth 1 -b ${BRANCH} \
 WORKDIR zalrsc-buildroot
 
 ARG THREADS=1
-RUN make -C buildroot BR2_EXTERNAL=$PWD/ qemu_riscv32_virt_zalrsc_defconfig && \
+RUN make -C buildroot BR2_EXTERNAL=$PWD/ qemu_riscv64_virt_zalrsc_defconfig && \
 	make -C buildroot -j${THREADS}
 

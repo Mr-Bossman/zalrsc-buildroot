@@ -1,2 +1,1 @@
-wget https://patchwork.kernel.org/project/linux-riscv/patch/20260120-lrsc-only-v2-1-a522e640d27d@mobileye.com/mbox/ -O board/qemu/riscv32_virt_zalrsc/patches/linux/v2-1-2-riscv-support-ISA-extensions-zaamo-and-zalrsc.patch
-wget https://patchwork.kernel.org/project/linux-riscv/patch/20260120-lrsc-only-v2-2-a522e640d27d@mobileye.com/mbox/ -O board/qemu/riscv32_virt_zalrsc/patches/linux/v2-2-2-riscv-more-accurate-check-for-CPU-atomics-support.patch
+wget https://patchwork.kernel.org/project/linux-riscv/patch/20260723-p8700-zalrsc-v4-1-59c21b252e29@htecgroup.com/mbox/ -O board/qemu/riscv64_virt_zalrsc/patches/linux/v4-riscv-Use-Zalrsc-extension-to-implement-atomic-functions.patch
